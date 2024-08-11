@@ -1,0 +1,52 @@
+# No idea why would I need cron job if I have HPA xD
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-up
+spec:
+  # Change 14 depending on service load
+  schedule: "0 14 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-up
+              image: service-scheduled-job:latest
+              args:
+                - "kubectl patch hpa application-hpa --patch '{\"spec\":{\"minReplicas\":8}}'" #  Change 8 depending on service load
+              env:
+                - name: "SERVICE_ACCOUNT_KEY"
+                  valueFrom:
+                    secretKeyRef:
+                      key: "token"
+                      name: "scale-hpa-sa-token"
+
+          restartPolicy: OnFailure
+
+---
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: scale-down
+spec:
+  # Change 23 depending on service load
+  schedule: "0 23 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-down
+              image: service-scheduled-job:latest
+              args:
+                - "kubectl patch hpa application-hpa --patch '{\"spec\":{\"minReplicas\":3}}'" # Change 3 depending on service load
+              env:
+                - name: "SERVICE_ACCOUNT_KEY"
+                  valueFrom:
+                    secretKeyRef:
+                      key: "token"
+                      name: "scale-hpa-sa-token"
+          restartPolicy: OnFailure
