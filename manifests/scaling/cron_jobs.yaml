@@ -1,4 +1,4 @@
-# No idea why would I need cron job if I have HPA xD
+# По факту этот файл бесполезный, т.к есть более хорошее решение, но в ТЗ написано, поэтому воть
 
 apiVersion: batch/v1
 kind: CronJob
@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
             - name: scale-up
-              image: service-scheduled-job:latest
+              image: bitnami/kubectl:latest
               args:
                 - "kubectl patch hpa application-hpa --patch '{\"spec\":{\"minReplicas\":8}}'" #  Change 8 depending on service load
               env:
@@ -40,7 +40,7 @@ spec:
         spec:
           containers:
             - name: scale-down
-              image: service-scheduled-job:latest
+              image: bitnami/kubectl:latest
               args:
                 - "kubectl patch hpa application-hpa --patch '{\"spec\":{\"minReplicas\":3}}'" # Change 3 depending on service load
               env:

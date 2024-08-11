@@ -34,8 +34,8 @@ spec:
           imagePullPolicy: IfNotPresent
           resources:
             requests:
-              memory: 128Mi
+              memory: 96Mi
               cpu: 0.1m
             limits:
-              memory: 150Mi
-              cpu: 0.2m
+              memory: 130Mi
+              cpu: 0.15m
