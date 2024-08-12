@@ -5,7 +5,7 @@ metadata:
   labels:
     app: application
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: application
@@ -39,7 +39,7 @@ spec:
 
           resources:
             requests:
-              memory: 96Mi
+              memory: 128Mi
               cpu: 0.1m
             limits:
               memory: 130Mi
